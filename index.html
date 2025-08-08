@@ -197,6 +197,13 @@
       error.textContent = "❌ ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।";
     }
   }
+  if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(reg => console.log('Service Worker registered'))
+      .catch(err => console.error('SW registration failed:', err));
+  });
+  }
 </script>
 
 </body>
