@@ -1,0 +1,20 @@
+{
+  "name": "LOTTARY DROW",
+  "short_name": "Lottary Drow",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d6efd",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/Hkm2bykY/images-8.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.postimg.cc/Hkm2bykY/images-8.jpg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
