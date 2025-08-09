@@ -190,7 +190,7 @@
   <div id="blurOverlay" class="blur-overlay">
     <div style="display: flex; flex-direction: column; align-items: center;">
       <lottie-player 
-        src="https://lottie.host/550d2b97-298f-49bd-8582-570a863e7f75/VSEJLShNB9.json" 
+        src="https://lottie.host/c5fea13c-4d76-4529-a235-d06cf937ff05/mDR5C3R3Mm.json" 
         background="transparent" speed="1" 
         style="width: 520px; height: 520px;" autoplay loop>
       </lottie-player>
@@ -261,33 +261,41 @@
         }
       }, 1000);
     });
-
     function showResults() {
-      const shuffled = [...uids].sort(() => 0.5 - Math.random());
-      const winners = shuffled.slice(0, 3);
-      const losers = shuffled.slice(3);
-      const icons = [
-        'https://i.postimg.cc/9MD1KP6G/1st-prize-11300105.png',
-        'https://i.postimg.cc/SQzDGr74/badge-540734.png',
-        'https://i.postimg.cc/Dw5gzYFr/3rd-place-11300531.png'
-      ];
+  let pool = [...uids]; // আসল লিস্টের কপি
+  const winners = [];
+  const icons = [
+    'https://i.postimg.cc/9MD1KP6G/1st-prize-11300105.png',
+    'https://i.postimg.cc/SQzDGr74/badge-540734.png',
+    'https://i.postimg.cc/Dw5gzYFr/3rd-place-11300531.png'
+  ];
+  const places = ['1st', '2nd', '3rd'];
 
-      winners.forEach((uid, i) => {
-        setTimeout(() => {
-          const div = document.createElement('div');
-          div.className = 'result-entry';
-          div.innerHTML = `
-            <img src="${icons[i]}" alt="${i + 1} place icon" />
-            <span>${['1st', '2nd', '3rd'][i]} Place: <strong>${uid}</strong></span>
-          `;
-          results.appendChild(div);
-        }, i * 2000);
-      });
+  // আলাদা আলাদা র‍্যান্ডম UID পিক করা
+  for (let i = 0; i < 3; i++) {
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    winners.push(pool[randomIndex]);
+    pool.splice(randomIndex, 1); // পিক হওয়া UID লিস্ট থেকে বাদ
+  }
 
-      if (losers.length > 0) {
-        lossUids.innerHTML = `<strong>Loss UIDs:</strong> ${losers.join(', ')}`;
-      }
-    }
+  // উইনার দেখানো
+  winners.forEach((uid, i) => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = 'result-entry';
+      div.innerHTML = `
+        <img src="${icons[i]}" alt="${places[i]} place icon" />
+        <span>${places[i]} Place: <strong>${uid}</strong></span>
+      `;
+      results.appendChild(div);
+    }, i * 1500); // একটু স্মুথ টাইম ডিলে
+  });
+
+  // লুজার লিস্ট দেখানো
+  if (pool.length > 0) {
+    lossUids.innerHTML = `<strong>Loss UIDs:</strong> ${pool.join(', ')}`;
+  }
+}
   </script>
 </body>
 </html>
