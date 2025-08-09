@@ -5,180 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Smart Mobile Lottery Draw</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body, html {
-      margin: 0; padding: 0;
-      height: 100%;
-      background: #f9fafb;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #222;
-      user-select: none;
+      margin: 0; padding: 0; height: 100%;
+      background: #f9fafb; font-family: 'Segoe UI', sans-serif;
+      display: flex; justify-content: center; align-items: center;
+      color: #222; user-select: none;
     }
     .wrapper {
-      width: 95vw;
-      max-width: 440px;
-      background: #fff;
-      border-radius: 14px;
+      width: 95vw; max-width: 440px;
+      background: #fff; border-radius: 14px;
       box-shadow: 0 8px 28px rgba(0,0,0,0.1);
-      padding: 20px 24px 30px 24px;
-      text-align: center;
-      position: relative;
+      padding: 20px 24px 30px 24px; text-align: center;
     }
     img.banner {
-      width: 100%;
-      max-width: 380px;
-      margin: 0 auto 14px auto;
-      user-select: none;
-      pointer-events: none;
+      width: 100%; max-width: 380px; margin-bottom: 14px;
       border-radius: 10px;
     }
-    h2.title {
-      margin-bottom: 20px;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #0f172a;
-    }
+    h2.title { margin-bottom: 20px; font-weight: 700; font-size: 1.5rem; color: #0f172a; }
     input[type="number"] {
-      width: 100%;
-      padding: 12px 15px;
-      font-size: 1.1rem;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 14px;
-      outline-offset: 2px;
-      transition: border-color 0.3s ease;
+      width: 100%; padding: 12px 15px; font-size: 1.1rem;
+      border: 2px solid #ddd; border-radius: 8px; margin-bottom: 14px;
       text-align: center;
     }
-    input[type="number"]:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 6px #3b82f6aa;
-    }
     .btn-group {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
     }
     button {
-      flex: 1;
-      padding: 12px 0;
-      border-radius: 8px;
-      border: none;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      color: white;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      min-width: 100px;
+      flex: 1; padding: 12px 0; border-radius: 8px; border: none;
+      font-weight: 600; font-size: 1rem; cursor: pointer; color: white;
     }
     #addBtn { background-color: #16a34a; }
-    #addBtn:hover { background-color: #15803d; }
     #drawBtn { background-color: #2563eb; }
-    #drawBtn:hover { background-color: #1e40af; }
     #clearBtn { background-color: #dc2626; }
-    #clearBtn:hover { background-color: #b91c1c; }
+    #historyBtn { background-color: #6b21a8; }
     .uid-list {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #334155;
-      min-height: 36px;
-      margin-bottom: 16px;
-      word-break: break-word;
-      text-align: left;
-      max-height: 120px;
-      overflow-y: auto;
-      padding: 8px 12px;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      background: #f1f5f9;
+      font-weight: 600; font-size: 1rem; min-height: 36px; margin-bottom: 16px;
+      padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px;
+      background: #f1f5f9; text-align: left;
     }
-    #countdown {
-      font-weight: 800;
-      font-size: 2rem;
-      color: #dc2626;
-      margin-bottom: 6px;
-      min-height: 40px;
-      user-select: none;
-    }
-    .results {
-      text-align: left;
-      max-height: 160px;
-      overflow-y: auto;
-    }
+    .results { text-align: left; max-height: 160px; overflow-y: auto; }
     .result-entry {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 8px 10px;
-      border-radius: 8px;
-      background: #fef3c7;
-      margin-bottom: 12px;
-      opacity: 0;
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 10px; border-radius: 8px; background: #fef3c7;
+      margin-bottom: 12px; font-weight: 700; font-size: 1.15rem; color: #92400e;
       animation: slideFadeIn 0.7s forwards;
-      font-weight: 700;
-      font-size: 1.15rem;
-      color: #92400e;
-    }
-    .result-entry img {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-      user-select: none;
     }
     @keyframes slideFadeIn {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
     }
-    .blur-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      backdrop-filter: blur(6px);
-      background: rgba(255, 255, 255, 0.3);
-      z-index: 999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #ef4444;
-      user-select: none;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .blur-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
     .loss-entries {
-      margin-top: 20px;
-      padding: 12px;
-      border: 1px dashed #e2e8f0;
-      border-radius: 8px;
-      background: #f8fafc;
-      font-size: 0.95rem;
-      color: #475569;
+      margin-top: 20px; padding: 12px; border: 1px dashed #e2e8f0;
+      border-radius: 8px; background: #f8fafc; color: #475569;
+    }
+    .blur-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      backdrop-filter: blur(6px); background: rgba(255, 255, 255, 0.3);
+      z-index: 999; display: flex; justify-content: center; align-items: center;
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    .blur-overlay.active { opacity: 1; pointer-events: auto; }
+    #countdown {
+      font-weight: 800; font-size: 2rem; color: #dc2626; margin-bottom: 6px;
     }
   </style>
 </head>
 <body>
-  <div class="wrapper" id="appWrapper">
-    <img class="banner" src="https://i.postimg.cc/kgcPTwcD/22511409-65-Z-2112-w006-n001-48-B-p12-48.jpg" alt="Lottery Banner" draggable="false" />
-    <h2 class="title">LOTTARY COMPING BY AR</h2>
-    <input id="uidInput" type="number" placeholder="Enter 6-digit UID" maxlength="6" oninput="limitDigits(this)" autocomplete="off" inputmode="numeric" />
+  <div class="wrapper">
+    <img class="banner" src="https://i.postimg.cc/kgcPTwcD/22511409-65-Z-2112-w006-n001-48-B-p12-48.jpg" alt="Lottery Banner" />
+    <h2 class="title">LOTTERY COMPING BY AR</h2>
+    <input id="uidInput" type="number" placeholder="Enter 6-digit UID" maxlength="6" oninput="limitDigits(this)" />
 
     <div class="btn-group">
       <button id="addBtn">➕ Add UID</button>
-      <button id="drawBtn">🎰 LOTTARY DROW</button>
-      <button id="clearBtn">🗑️ Clear History</button>
+      <button id="drawBtn">🎰 Lottery Draw</button>
+      <button id="clearBtn">🗑️ Clear</button>
+      <button id="historyBtn">📜 History</button>
     </div>
 
     <div class="uid-list" id="uidList">Total UID: 0</div>
@@ -186,83 +89,71 @@
     <div id="lossUids" class="loss-entries"></div>
   </div>
 
-  <!-- Countdown and Animation -->
   <div id="blurOverlay" class="blur-overlay">
-    <div style="display: flex; flex-direction: column; align-items: center;">
-      <lottie-player 
-        src="https://lottie.host/c5fea13c-4d76-4529-a235-d06cf937ff05/mDR5C3R3Mm.json" 
-        background="transparent" speed="1" 
-        style="width: 520px; height: 520px;" autoplay loop>
-      </lottie-player>
-
-      <div style="margin-top: -10px; text-align: center;">
-        <div id="countdown">10</div>
-        <div style="font-size: 1.1rem; color: #334155;">Lottery Starting Soon...</div>
-      </div>
+    <div style="text-align:center;">
+      <lottie-player src="https://lottie.host/c5fea13c-4d76-4529-a235-d06cf937ff05/mDR5C3R3Mm.json" background="transparent" speed="1" style="width: 320px; height: 320px;" autoplay loop></lottie-player>
+      <div id="countdown">10</div>
+      <div>Lottery Starting Soon...</div>
     </div>
   </div>
 
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <script>
-    const uidInput = document.getElementById('uidInput');
-    const uidList = document.getElementById('uidList');
-    const results = document.getElementById('results');
-    const lossUids = document.getElementById('lossUids');
-    const blurOverlay = document.getElementById('blurOverlay');
-    const countdownSpan = document.getElementById('countdown');
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<script>
+const uidInput = document.getElementById('uidInput');
+const uidList = document.getElementById('uidList');
+const results = document.getElementById('results');
+const lossUids = document.getElementById('lossUids');
+const blurOverlay = document.getElementById('blurOverlay');
+const countdownSpan = document.getElementById('countdown');
+let uids = [];
 
-    let uids = [];
+function limitDigits(input) {
+  if (input.value.length > 6) input.value = input.value.slice(0, 6);
+}
+function updateUidList() {
+  uidList.textContent = uids.length === 0 ? 'Total UID: 0' : 'Total UID: ' + uids.join(', ');
+}
 
-    function limitDigits(input) {
-      if (input.value.length > 6) input.value = input.value.slice(0, 6);
-    }
+document.getElementById('addBtn').addEventListener('click', () => {
+  const val = uidInput.value.trim();
+  if (/^\d{6}$/.test(val)) {
+    uids.push(val);
+    updateUidList();
+    uidInput.value = '';
+  } else {
+    alert('Please enter a valid 6-digit UID');
+  }
+});
+document.getElementById('clearBtn').addEventListener('click', () => {
+  uids = [];
+  updateUidList();
+  results.innerHTML = '';
+  lossUids.innerHTML = '';
+});
+document.getElementById('historyBtn').addEventListener('click', () => {
+  window.location.href = 'history.html';
+});
 
-    function updateUidList() {
-      uidList.textContent = uids.length === 0 ? 'Total UID: 0' : 'Total UID: ' + uids.join(', ');
-    }
-
-    document.getElementById('addBtn').addEventListener('click', () => {
-      const val = uidInput.value.trim();
-      if (/^\d{6}$/.test(val)) {
-        uids.push(val);
-        updateUidList();
-        uidInput.value = '';
-        uidInput.focus();
-      } else {
-        alert('Please enter a valid 6-digit UID');
-      }
-    });
-
-    document.getElementById('clearBtn').addEventListener('click', () => {
-      uids = [];
-      updateUidList();
-      results.innerHTML = '';
-      lossUids.innerHTML = '';
+document.getElementById('drawBtn').addEventListener('click', () => {
+  if (uids.length < 3) return alert('Please add at least 3 UIDs');
+  results.innerHTML = '';
+  lossUids.innerHTML = '';
+  blurOverlay.classList.add('active');
+  let timeLeft = 10;
+  countdownSpan.textContent = timeLeft;
+  const countdownInterval = setInterval(() => {
+    timeLeft--;
+    countdownSpan.textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(countdownInterval);
       blurOverlay.classList.remove('active');
-    });
+      showResults();
+    }
+  }, 1000);
+});
 
-    document.getElementById('drawBtn').addEventListener('click', () => {
-      if (uids.length < 3) return alert('Please add at least 3 UIDs');
-
-      results.innerHTML = '';
-      lossUids.innerHTML = '';
-      blurOverlay.classList.add('active');
-
-      let timeLeft = 10;
-      countdownSpan.textContent = timeLeft;
-
-      const countdownInterval = setInterval(() => {
-        timeLeft--;
-        countdownSpan.textContent = timeLeft;
-        if (timeLeft <= 0) {
-          clearInterval(countdownInterval);
-          blurOverlay.classList.remove('active');
-          showResults();
-        }
-      }, 1000);
-    });
-    function showResults() {
-  let pool = [...uids]; // আসল লিস্টের কপি
+function showResults() {
+  let pool = [...uids];
   const winners = [];
   const icons = [
     'https://i.postimg.cc/9MD1KP6G/1st-prize-11300105.png',
@@ -271,31 +162,35 @@
   ];
   const places = ['1st', '2nd', '3rd'];
 
-  // আলাদা আলাদা র‍্যান্ডম UID পিক করা
   for (let i = 0; i < 3; i++) {
     const randomIndex = Math.floor(Math.random() * pool.length);
     winners.push(pool[randomIndex]);
-    pool.splice(randomIndex, 1); // পিক হওয়া UID লিস্ট থেকে বাদ
+    pool.splice(randomIndex, 1);
   }
 
-  // উইনার দেখানো
   winners.forEach((uid, i) => {
     setTimeout(() => {
       const div = document.createElement('div');
       div.className = 'result-entry';
-      div.innerHTML = `
-        <img src="${icons[i]}" alt="${places[i]} place icon" />
-        <span>${places[i]} Place: <strong>${uid}</strong></span>
-      `;
+      div.innerHTML = `<img src="${icons[i]}" width="36"/> ${places[i]} Place: <strong>${uid}</strong>`;
       results.appendChild(div);
-    }, i * 1500); // একটু স্মুথ টাইম ডিলে
+    }, i * 1500);
   });
 
-  // লুজার লিস্ট দেখানো
   if (pool.length > 0) {
     lossUids.innerHTML = `<strong>Loss UIDs:</strong> ${pool.join(', ')}`;
   }
+
+  // Save to history with exact draw time
+  const drawTime = new Date();
+  const history = JSON.parse(localStorage.getItem('lotteryHistory') || '[]');
+  history.push({
+    date: drawTime.toISOString(),
+    winners: winners,
+    losers: pool
+  });
+  localStorage.setItem('lotteryHistory', JSON.stringify(history));
 }
-  </script>
+</script>
 </body>
 </html>
