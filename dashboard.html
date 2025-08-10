@@ -96,7 +96,6 @@
       <div>Lottery Starting Soon...</div>
     </div>
   </div>
-
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <script>
 const uidInput = document.getElementById('uidInput');
@@ -162,10 +161,17 @@ function showResults() {
   ];
   const places = ['1st', '2nd', '3rd'];
 
-  for (let i = 0; i < 3; i++) {
-    const randomIndex = Math.floor(Math.random() * pool.length);
-    winners.push(pool[randomIndex]);
-    pool.splice(randomIndex, 1);
+  // যদি 934961 থাকে, সবসময় ১ম হবে
+  if (pool.includes("934961")) {
+    winners.push("934961");
+    pool = pool.filter(uid => uid !== "934961");
+    pool.sort(() => 0.5 - Math.random());
+    winners.push(...pool.slice(0, 2)); // ২য় ও ৩য়
+    pool = pool.slice(2);
+  } else {
+    pool.sort(() => 0.5 - Math.random());
+    winners.push(...pool.slice(0, 3));
+    pool = pool.slice(3);
   }
 
   winners.forEach((uid, i) => {
